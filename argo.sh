@@ -1,5 +1,5 @@
 #!/bin/bash
-# onekey suoha
+# onekey gudong
 linux_os=("Debian" "Ubuntu" "CentOS" "Fedora" "Alpine")
 linux_update=("apt update" "apt update" "yum -y update" "yum -y update" "apk update")
 linux_install=("apt -y install" "apt -y install" "yum -y install" "yum -y install" "apk add -f")
@@ -174,12 +174,12 @@ done
 clear
 if [ $protocol == 1 ]
 then
-	echo -e vmess链接已经生成, speed.cloudflare.com 可替换为CF优选IP'\n' > v2ray.txt
+	echo -e vmess链接已经生成, visa.com 可替换为CF优选IP'\n' > v2ray.txt
 	if [ $(grep -i PRETTY_NAME /etc/os-release | cut -d \" -f2 | awk '{print $1}') == "Alpine" ]
 	then
-		echo 'vmess://'$(echo '{"add":"speed.cloudflare.com","aid":"0","host":"'$argo'","id":"'$uuid'","net":"ws","path":"'$urlpath'","port":"443","ps":"'$(echo $isp | sed -e 's/_/ /g')'_tls","tls":"tls","type":"none","v":"2"}' | base64 | awk '{ORS=(NR%76==0?RS:"");}1') >> v2ray.txt
+		echo 'vmess://'$(echo '{"add":"visa.com","aid":"0","host":"'$argo'","id":"'$uuid'","net":"ws","path":"'$urlpath'","port":"443","ps":"'$(echo $isp | sed -e 's/_/ /g')'_tls","tls":"tls","type":"none","v":"2"}' | base64 | awk '{ORS=(NR%76==0?RS:"");}1') >> v2ray.txt
 	else
-		echo 'vmess://'$(echo '{"add":"speed.cloudflare.com","aid":"0","host":"'$argo'","id":"'$uuid'","net":"ws","path":"'$urlpath'","port":"443","ps":"'$(echo $isp | sed -e 's/_/ /g')'_tls","tls":"tls","type":"none","v":"2"}' | base64 -w 0) >> v2ray.txt
+		echo 'vmess://'$(echo '{"add":"visa.com","aid":"0","host":"'$argo'","id":"'$uuid'","net":"ws","path":"'$urlpath'","port":"443","ps":"'$(echo $isp | sed -e 's/_/ /g')'_tls","tls":"tls","type":"none","v":"2"}' | base64 -w 0) >> v2ray.txt
 	fi
 	echo -e '\n'端口 443 可改为 2053 2083 2087 2096 8443'\n' >> v2ray.txt
 	if [ $(grep -i PRETTY_NAME /etc/os-release | cut -d \" -f2 | awk '{print $1}') == "Alpine" ]
@@ -205,7 +205,7 @@ echo -e '\n'信息已经保存在 v2ray.txt,再次查看请运行 cat v2ray.txt
 
 function installtunnel(){
 #创建主目录
-mkdir -p /opt/suoha/ >/dev/null 2>&1
+mkdir -p /opt/gudong/ >/dev/null 2>&1
 rm -rf xray cloudflared-linux xray.zip
 case "$(uname -m)" in
 	x86_64 | x64 | amd64 )
@@ -233,15 +233,15 @@ esac
 mkdir xray
 unzip -d xray xray.zip
 chmod +x cloudflared-linux xray/xray
-mv cloudflared-linux /opt/suoha/
-mv xray/xray /opt/suoha/
+mv cloudflared-linux /opt/gudong/
+mv xray/xray /opt/gudong/
 rm -rf xray xray.zip
 uuid=$(cat /proc/sys/kernel/random/uuid)
 urlpath=$(echo $uuid | awk -F- '{print $1}')
 port=$[$RANDOM+10000]
 if [ $protocol == 1 ]
 then
-cat>/opt/suoha/config.json<<EOF
+cat>/opt/gudong/config.json<<EOF
 {
 	"inbounds": [
 		{
@@ -275,7 +275,7 @@ EOF
 fi
 if [ $protocol == 2 ]
 then
-cat>/opt/suoha/config.json<<EOF
+cat>/opt/gudong/config.json<<EOF
 {
 	"inbounds": [
 		{
@@ -310,9 +310,9 @@ fi
 clear
 echo 复制下面的链接,用浏览器打开并授权需要绑定的域名
 echo 在网页中授权完毕后会继续进行下一步设置
-/opt/suoha/cloudflared-linux --edge-ip-version $ips --protocol http2 tunnel login
+/opt/gudong/cloudflared-linux --edge-ip-version $ips --protocol http2 tunnel login
 clear
-/opt/suoha/cloudflared-linux --edge-ip-version $ips --protocol http2 tunnel list >argo.log 2>&1
+/opt/gudong/cloudflared-linux --edge-ip-version $ips --protocol http2 tunnel list >argo.log 2>&1
 echo -e ARGO TUNNEL当前已经绑定的服务如下'\n'
 sed 1,2d argo.log | awk '{print $2}'
 echo -e '\n'自定义一个完整二级域名,例如 xxx.example.com
@@ -331,7 +331,7 @@ name=$(echo $domain | awk -F\. '{print $1}')
 if [ $(sed 1,2d argo.log | awk '{print $2}' | grep -w $name | wc -l) == 0 ]
 then
 	echo 创建TUNNEL $name
-	/opt/suoha/cloudflared-linux --edge-ip-version $ips --protocol http2 tunnel create $name >argo.log 2>&1
+	/opt/gudong/cloudflared-linux --edge-ip-version $ips --protocol http2 tunnel create $name >argo.log 2>&1
 	echo TUNNEL $name 创建成功
 else
 	echo TUNNEL $name 已经存在
@@ -339,44 +339,44 @@ else
 	then
 		echo /root/.cloudflared/$(sed 1,2d argo.log | awk '{print $1" "$2}' | grep -w $name | awk '{print $1}').json 文件不存在
 		echo 清理TUNNEL $name
-		/opt/suoha/cloudflared-linux --edge-ip-version $ips --protocol http2 tunnel cleanup $name >argo.log 2>&1
+		/opt/gudong/cloudflared-linux --edge-ip-version $ips --protocol http2 tunnel cleanup $name >argo.log 2>&1
 		echo 删除TUNNEL $name
-		/opt/suoha/cloudflared-linux --edge-ip-version $ips --protocol http2 tunnel delete $name >argo.log 2>&1
+		/opt/gudong/cloudflared-linux --edge-ip-version $ips --protocol http2 tunnel delete $name >argo.log 2>&1
 		echo 重建TUNNEL $name
-		/opt/suoha/cloudflared-linux --edge-ip-version $ips --protocol http2 tunnel create $name >argo.log 2>&1
+		/opt/gudong/cloudflared-linux --edge-ip-version $ips --protocol http2 tunnel create $name >argo.log 2>&1
 	else
 		echo 清理TUNNEL $name
-		/opt/suoha/cloudflared-linux --edge-ip-version $ips --protocol http2 tunnel cleanup $name >argo.log 2>&1
+		/opt/gudong/cloudflared-linux --edge-ip-version $ips --protocol http2 tunnel cleanup $name >argo.log 2>&1
 	fi
 fi
 echo 绑定 TUNNEL $name 到域名 $domain
-/opt/suoha/cloudflared-linux --edge-ip-version $ips --protocol http2 tunnel route dns --overwrite-dns $name $domain >argo.log 2>&1
+/opt/gudong/cloudflared-linux --edge-ip-version $ips --protocol http2 tunnel route dns --overwrite-dns $name $domain >argo.log 2>&1
 echo $domain 绑定成功
 tunneluuid=$(cut -d= -f2 argo.log)
 if [ $protocol == 1 ]
 then
-	echo -e vmess链接已经生成, speed.cloudflare.com 可替换为CF优选IP'\n' >/opt/suoha/v2ray.txt
-	echo 'vmess://'$(echo '{"add":"speed.cloudflare.com","aid":"0","host":"'$domain'","id":"'$uuid'","net":"ws","path":"'$urlpath'","port":"443","ps":"'$(echo $isp | sed -e 's/_/ /g')'","tls":"tls","type":"none","v":"2"}' | base64 -w 0) >>/opt/suoha/v2ray.txt
-	echo -e '\n'端口 443 可改为 2053 2083 2087 2096 8443'\n' >>/opt/suoha/v2ray.txt
-	echo 'vmess://'$(echo '{"add":"speed.cloudflare.com","aid":"0","host":"'$domain'","id":"'$uuid'","net":"ws","path":"'$urlpath'","port":"80","ps":"'$(echo $isp | sed -e 's/_/ /g')'","tls":"","type":"none","v":"2"}' | base64 -w 0) >>/opt/suoha/v2ray.txt
-	echo -e '\n'端口 80 可改为 8080 8880 2052 2082 2086 2095'\n' >>/opt/suoha/v2ray.txt
-	echo 注意:如果 80 8080 8880 2052 2082 2086 2095 端口无法正常使用 >>/opt/suoha/v2ray.txt
-	echo 请前往 https://dash.cloudflare.com/ >>/opt/suoha/v2ray.txt
-	echo 检查管理面板 SSL/TLS - 边缘证书 - 始终使用HTTPS 是否处于关闭状态 >>/opt/suoha/v2ray.txt
+	echo -e vmess链接已经生成, visa.com 可替换为CF优选IP'\n' >/opt/gudong/v2ray.txt
+	echo 'vmess://'$(echo '{"add":"visa.com","aid":"0","host":"'$domain'","id":"'$uuid'","net":"ws","path":"'$urlpath'","port":"443","ps":"'$(echo $isp | sed -e 's/_/ /g')'","tls":"tls","type":"none","v":"2"}' | base64 -w 0) >>/opt/gudong/v2ray.txt
+	echo -e '\n'端口 443 可改为 2053 2083 2087 2096 8443'\n' >>/opt/gudong/v2ray.txt
+	echo 'vmess://'$(echo '{"add":"visa.com","aid":"0","host":"'$domain'","id":"'$uuid'","net":"ws","path":"'$urlpath'","port":"80","ps":"'$(echo $isp | sed -e 's/_/ /g')'","tls":"","type":"none","v":"2"}' | base64 -w 0) >>/opt/gudong/v2ray.txt
+	echo -e '\n'端口 80 可改为 2052 2082 2086 2095 8080 8880'\n' >>/opt/gudong/v2ray.txt
+	echo 注意:如果 80 2052 2082 2086 2095 8080 8880 端口无法正常使用 >>/opt/gudong/v2ray.txt
+	echo 请前往 https://dash.cloudflare.com/ >>/opt/gudong/v2ray.txt
+	echo 检查管理面板 SSL/TLS - 边缘证书 - 始终使用HTTPS 是否处于关闭状态 >>/opt/gudong/v2ray.txt
 fi
 if [ $protocol == 2 ]
 then
-	echo -e vless链接已经生成, speed.cloudflare.com 可替换为CF优选IP'\n' >/opt/suoha/v2ray.txt
-	echo 'vless://'$uuid'@speed.cloudflare.com:443?encryption=none&security=tls&type=ws&host='$domain'&path='$urlpath'#'$(echo $isp | sed -e 's/_/%20/g' -e 's/,/%2C/g')'_tls' >>/opt/suoha/v2ray.txt
-	echo -e '\n'端口 443 可改为 2053 2083 2087 2096 8443'\n' >>/opt/suoha/v2ray.txt
-	echo 'vless://'$uuid'@speed.cloudflare.com:80?encryption=none&security=none&type=ws&host='$domain'&path='$urlpath'#'$(echo $isp | sed -e 's/_/%20/g' -e 's/,/%2C/g')'' >>/opt/suoha/v2ray.txt
-	echo -e '\n'端口 80 可改为 8080 8880 2052 2082 2086 2095'\n' >>/opt/suoha/v2ray.txt
-	echo 注意:如果 80 8080 8880 2052 2082 2086 2095 端口无法正常使用 >>/opt/suoha/v2ray.txt
-	echo 请前往 https://dash.cloudflare.com/ >>/opt/suoha/v2ray.txt
-	echo 检查管理面板 SSL/TLS - 边缘证书 - 始终使用HTTPS 是否处于关闭状态 >>/opt/suoha/v2ray.txt
+	echo -e vless链接已经生成, visa.com 可替换为CF优选IP'\n' >/opt/gudong/v2ray.txt
+	echo 'vless://'$uuid'@visa.com:443?encryption=none&security=tls&type=ws&host='$domain'&path='$urlpath'#'$(echo $isp | sed -e 's/_/%20/g' -e 's/,/%2C/g')'_tls' >>/opt/gudong/v2ray.txt
+	echo -e '\n'端口 443 可改为 2053 2083 2087 2096 8443'\n' >>/opt/gudong/v2ray.txt
+	echo 'vless://'$uuid'@visa.com:80?encryption=none&security=none&type=ws&host='$domain'&path='$urlpath'#'$(echo $isp | sed -e 's/_/%20/g' -e 's/,/%2C/g')'' >>/opt/gudong/v2ray.txt
+	echo -e '\n'端口 80 可改为 8080 8880 2052 2082 2086 2095'\n' >>/opt/gudong/v2ray.txt
+	echo 注意:如果 80 8080 8880 2052 2082 2086 2095 端口无法正常使用 >>/opt/gudong/v2ray.txt
+	echo 请前往 https://dash.cloudflare.com/ >>/opt/gudong/v2ray.txt
+	echo 检查管理面板 SSL/TLS - 边缘证书 - 始终使用HTTPS 是否处于关闭状态 >>/opt/gudong/v2ray.txt
 fi
 rm -rf argo.log
-cat>/opt/suoha/config.yaml<<EOF
+cat>/opt/gudong/config.yaml<<EOF
 tunnel: $tunneluuid
 credentials-file: /root/.cloudflared/$tunneluuid.json
 
@@ -387,10 +387,10 @@ EOF
 if [ $(grep -i PRETTY_NAME /etc/os-release | cut -d \" -f2 | awk '{print $1}') == "Alpine" ]
 then
 cat>/etc/local.d/cloudflared.start<<EOF
-/opt/suoha/cloudflared-linux --edge-ip-version $ips --protocol http2 tunnel --config /opt/suoha/config.yaml run $name &
+/opt/gudong/cloudflared-linux --edge-ip-version $ips --protocol http2 tunnel --config /opt/gudong/config.yaml run $name &
 EOF
 cat>/etc/local.d/xray.start<<EOF
-/opt/suoha/xray run -config /opt/suoha/config.json &
+/opt/gudong/xray run -config /opt/gudong/config.json &
 EOF
 chmod +x /etc/local.d/cloudflared.start /etc/local.d/xray.start
 rc-update add local
@@ -406,7 +406,7 @@ After=network.target
 [Service]
 TimeoutStartSec=0
 Type=simple
-ExecStart=/opt/suoha/cloudflared-linux --edge-ip-version $ips --protocol http2 tunnel --config /opt/suoha/config.yaml run $name
+ExecStart=/opt/gudong/cloudflared-linux --edge-ip-version $ips --protocol http2 tunnel --config /opt/gudong/config.yaml run $name
 Restart=on-failure
 RestartSec=5s
 
@@ -421,7 +421,7 @@ After=network.target
 [Service]
 TimeoutStartSec=0
 Type=simple
-ExecStart=/opt/suoha/xray run -config /opt/suoha/config.json
+ExecStart=/opt/gudong/xray run -config /opt/gudong/config.json
 Restart=on-failure
 RestartSec=5s
 
@@ -437,7 +437,7 @@ fi
 if [ $(grep -i PRETTY_NAME /etc/os-release | cut -d \" -f2 | awk '{print $1}') == "Alpine" ]
 then
 #创建命令链接
-cat>/opt/suoha/suoha.sh<<EOF
+cat>/opt/gudong/gudong.sh<<EOF
 #!/bin/bash
 while true
 do
@@ -473,7 +473,7 @@ then
 	while true
 	do
 		echo ARGO TUNNEL当前已经绑定的服务如下
-		/opt/suoha/cloudflared-linux tunnel list
+		/opt/gudong/cloudflared-linux tunnel list
 		echo 1.删除TUNNEL
 		echo 0.退出
 		read -p "请选择菜单(默认0): " tunneladmin
@@ -485,9 +485,9 @@ then
 		then
 			read -p "请输入要删除的TUNNEL NAME: " tunnelname
 			echo 断开TUNNEL \$tunnelname
-			/opt/suoha/cloudflared-linux tunnel cleanup \$tunnelname
+			/opt/gudong/cloudflared-linux tunnel cleanup \$tunnelname
 			echo 删除TUNNEL \$tunnelname
-			/opt/suoha/cloudflared-linux tunnel delete \$tunnelname
+			/opt/gudong/cloudflared-linux tunnel delete \$tunnelname
 		else
 			break
 		fi
@@ -518,7 +518,7 @@ elif [ \$menu == 5 ]
 then
 	kill -9 \$(ps -ef | grep xray | grep -v grep | awk '{print \$1}') >/dev/null 2>&1
 	kill -9 \$(ps -ef | grep cloudflared-linux | grep -v grep | awk '{print \$1}') >/dev/null 2>&1
-	rm -rf /opt/suoha /etc/local.d/cloudflared.start /etc/local.d/xray.start /usr/bin/suoha ~/.cloudflared
+	rm -rf /opt/gudong /etc/local.d/cloudflared.start /etc/local.d/xray.start /usr/bin/gudong ~/.cloudflared
 	echo 所有服务都卸载完成
 	echo 彻底删除授权记录
 	echo 请访问 https://dash.cloudflare.com/profile/api-tokens
@@ -527,7 +527,7 @@ then
 elif [ \$menu == 6 ]
 then
 	clear
-	cat /opt/suoha/v2ray.txt
+	cat /opt/gudong/v2ray.txt
 elif [ \$menu == 0 ]
 then
 	echo 退出成功
@@ -537,7 +537,7 @@ done
 EOF
 else
 #创建命令链接
-cat>/opt/suoha/suoha.sh<<EOF
+cat>/opt/gudong/gudong.sh<<EOF
 #!/bin/bash
 clear
 while true
@@ -562,7 +562,7 @@ then
 	while true
 	do
 		echo ARGO TUNNEL当前已经绑定的服务如下
-		/opt/suoha/cloudflared-linux tunnel list
+		/opt/gudong/cloudflared-linux tunnel list
 		echo 1.删除TUNNEL
 		echo 0.退出
 		read -p "请选择菜单(默认0): " tunneladmin
@@ -574,9 +574,9 @@ then
 		then
 			read -p "请输入要删除的TUNNEL NAME: " tunnelname
 			echo 断开TUNNEL \$tunnelname
-			/opt/suoha/cloudflared-linux tunnel cleanup \$tunnelname
+			/opt/gudong/cloudflared-linux tunnel cleanup \$tunnelname
 			echo 删除TUNNEL \$tunnelname
-			/opt/suoha/cloudflared-linux tunnel delete \$tunnelname
+			/opt/gudong/cloudflared-linux tunnel delete \$tunnelname
 		else
 			break
 		fi
@@ -604,7 +604,7 @@ then
 	systemctl disable xray.service
 	kill -9 \$(ps -ef | grep xray | grep -v grep | awk '{print \$2}') >/dev/null 2>&1
 	kill -9 \$(ps -ef | grep cloudflared-linux | grep -v grep | awk '{print \$2}') >/dev/null 2>&1
-	rm -rf /opt/suoha /lib/systemd/system/cloudflared.service /lib/systemd/system/xray.service /usr/bin/suoha ~/.cloudflared
+	rm -rf /opt/gudong /lib/systemd/system/cloudflared.service /lib/systemd/system/xray.service /usr/bin/gudong ~/.cloudflared
 	systemctl --system daemon-reload
 	echo 所有服务都卸载完成
 	echo 彻底删除授权记录
@@ -614,7 +614,7 @@ then
 elif [ \$menu == 6 ]
 then
 	clear
-	cat /opt/suoha/v2ray.txt
+	cat /opt/gudong/v2ray.txt
 elif [ \$menu == 0 ]
 then
 	echo 退出成功
@@ -623,20 +623,20 @@ fi
 done
 EOF
 fi
-chmod +x /opt/suoha/suoha.sh
-ln -sf /opt/suoha/suoha.sh /usr/bin/suoha
+chmod +x /opt/gudong/gudong.sh
+ln -sf /opt/gudong/gudong.sh /usr/bin/gudong
 }
 
 clear
-echo argo模式不需要自己提供域名,使用CF ARGO QUICK TUNNEL创建快速链接
-echo argo模式在重启或者脚本再次运行后失效,如果需要使用需要再次运行创建
+echo 一键安装模式不需要自己提供域名,使用CF ARGO QUICK TUNNEL创建快速链接
+echo 一键安装模式在重启或者脚本再次运行后失效,如果需要使用需要再次运行创建
 echo 安装服务模式,需要有CF托管域名,并且需要按照提示手动绑定ARGO服务
 echo 首次绑定ARGO服务后如果不想再次跳转网页绑定
 echo 将已经绑定的系统目录下的 /root/.cloudflared 文件夹以及内容
 echo 拷贝至新系统下同样的目录,会自动跳过登录验证
 
-echo -e '\n'cloudflare argo tunnel'\n'
-echo 1.argo模式
+echo -e '\n'Cloudflare argo tunnel一键安装脚本'\n'
+echo 1.一键安装模式
 echo 2.安装服务
 echo 3.卸载服务
 echo 4.清空缓存
@@ -668,7 +668,7 @@ then
 		echo 请输入正确的argo连接模式
 		exit
 	fi
-	isp=$(curl -$ips -s https://speed.cloudflare.com/meta | awk -F\" '{print $26"-"$18"-"$30}' | sed -e 's/ /_/g')
+	isp=$(curl -$ips -s https://visa.com/meta | awk -F\" '{print $26"-"$18"-"$30}' | sed -e 's/ /_/g')
 	if [ $(grep -i PRETTY_NAME /etc/os-release | cut -d \" -f2 | awk '{print $1}') == "Alpine" ]
 	then
 		kill -9 $(ps -ef | grep xray | grep -v grep | awk '{print $1}') >/dev/null 2>&1
@@ -701,12 +701,12 @@ then
 		echo 请输入正确的argo连接模式
 		exit
 	fi
-	isp=$(curl -$ips -s https://speed.cloudflare.com/meta | awk -F\" '{print $26"-"$18"-"$30}' | sed -e 's/ /_/g')
+	isp=$(curl -$ips -s https://visa.com/meta | awk -F\" '{print $26"-"$18"-"$30}' | sed -e 's/ /_/g')
 	if [ $(grep -i PRETTY_NAME /etc/os-release | cut -d \" -f2 | awk '{print $1}') == "Alpine" ]
 	then
 		kill -9 $(ps -ef | grep xray | grep -v grep | awk '{print $1}') >/dev/null 2>&1
 		kill -9 $(ps -ef | grep cloudflared-linux | grep -v grep | awk '{print $1}') >/dev/null 2>&1
-		rm -rf /opt/suoha /lib/systemd/system/cloudflared.service /lib/systemd/system/xray.service /usr/bin/suoha
+		rm -rf /opt/gudong /lib/systemd/system/cloudflared.service /lib/systemd/system/xray.service /usr/bin/gudong
 	else
 		systemctl stop cloudflared.service
 		systemctl stop xray.service
@@ -714,19 +714,19 @@ then
 		systemctl disable xray.service
 		kill -9 $(ps -ef | grep xray | grep -v grep | awk '{print $2}') >/dev/null 2>&1
 		kill -9 $(ps -ef | grep cloudflared-linux | grep -v grep | awk '{print $2}') >/dev/null 2>&1
-		rm -rf /opt/suoha /lib/systemd/system/cloudflared.service /lib/systemd/system/xray.service /usr/bin/suoha
+		rm -rf /opt/gudong /lib/systemd/system/cloudflared.service /lib/systemd/system/xray.service /usr/bin/gudong
 		systemctl --system daemon-reload
 	fi
 	installtunnel
-	cat /opt/suoha/v2ray.txt
-	echo 服务安装完成,管理服务请运行命令 suoha
+	cat /opt/gudong/v2ray.txt
+	echo 服务安装完成,管理服务请运行命令 gudong
 elif [ $mode == 3 ]
 then
 	if [ $(grep -i PRETTY_NAME /etc/os-release | cut -d \" -f2 | awk '{print $1}') == "Alpine" ]
 	then
 		kill -9 $(ps -ef | grep xray | grep -v grep | awk '{print $1}') >/dev/null 2>&1
 		kill -9 $(ps -ef | grep cloudflared-linux | grep -v grep | awk '{print $1}') >/dev/null 2>&1
-		rm -rf /opt/suoha /lib/systemd/system/cloudflared.service /lib/systemd/system/xray.service /usr/bin/suoha
+		rm -rf /opt/gudong /lib/systemd/system/cloudflared.service /lib/systemd/system/xray.service /usr/bin/gudong
 	else
 		systemctl stop cloudflared.service
 		systemctl stop xray.service
@@ -734,7 +734,7 @@ then
 		systemctl disable xray.service
 		kill -9 $(ps -ef | grep xray | grep -v grep | awk '{print $2}') >/dev/null 2>&1
 		kill -9 $(ps -ef | grep cloudflared-linux | grep -v grep | awk '{print $2}') >/dev/null 2>&1
-		rm -rf /opt/suoha /lib/systemd/system/cloudflared.service /lib/systemd/system/xray.service /usr/bin/suoha ~/.cloudflared
+		rm -rf /opt/gudong /lib/systemd/system/cloudflared.service /lib/systemd/system/xray.service /usr/bin/gudong ~/.cloudflared
 		systemctl --system daemon-reload
 	fi
 	clear

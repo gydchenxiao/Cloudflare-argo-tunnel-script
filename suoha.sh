@@ -628,15 +628,15 @@ ln -sf /opt/suoha/suoha.sh /usr/bin/suoha
 }
 
 clear
-echo 梭哈模式不需要自己提供域名,使用CF ARGO QUICK TUNNEL创建快速链接
-echo 梭哈模式在重启或者脚本再次运行后失效,如果需要使用需要再次运行创建
+echo argo模式不需要自己提供域名,使用CF ARGO QUICK TUNNEL创建快速链接
+echo argo模式在重启或者脚本再次运行后失效,如果需要使用需要再次运行创建
 echo 安装服务模式,需要有CF托管域名,并且需要按照提示手动绑定ARGO服务
 echo 首次绑定ARGO服务后如果不想再次跳转网页绑定
 echo 将已经绑定的系统目录下的 /root/.cloudflared 文件夹以及内容
 echo 拷贝至新系统下同样的目录,会自动跳过登录验证
 
-echo -e '\n'梭哈是一种智慧!!!梭哈!梭哈!梭哈!梭哈!梭哈!梭哈!梭哈...'\n'
-echo 1.梭哈模式
+echo -e '\n'cloudflare argo tunnel'\n'
+echo 1.argo模式
 echo 2.安装服务
 echo 3.卸载服务
 echo 4.清空缓存

@@ -1,1 +1,3 @@
-#### 一键argo脚本： `curl https://www.baipiao.eu.org/suoha.sh -o suoha.sh && bash suoha.sh`
+#### 一键argo脚本：
+`curl -L https://raw.githubusercontent.com/gudong1012/cloudlfare-argo-tunnel-script/main/argo.sh -o argo.sh && bash argo.sh
+`

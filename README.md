@@ -22,7 +22,11 @@ curl -L https://raw.githubusercontent.com/gydchenxiao/Cloudflare-argo-tunnel-scr
 ![](https://s2.loli.net/2024/08/30/eG6EF2KS8OzMBCa.png)
 ![](https://s2.loli.net/2024/08/30/yNkAtCbrTUDzdPZ.png)
 
-#### 自定义一个完整的二级域名输入并回车
+<br />
+
+#### 自定义一个完整的二级域名输入并回车生成代理节点
+<br />
+
 ![](https://s2.loli.net/2024/08/30/botRdiIWuSmDaqs.png)
 
 #### 管理页面输入gudong

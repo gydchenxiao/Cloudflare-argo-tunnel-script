@@ -3,7 +3,7 @@
 ```
 curl -L https://raw.githubusercontent.com/gydchenxiao/Cloudflare-argo-tunnel-script/main/argo.sh -o argo.sh && bash argo.sh
 ```
-#### 复制脚本到海外的nat或者vps里并回车enter
+#### 复制脚本到海外的nat或者vps里并回车enter    [ssh工具推荐](https://tabby.sh/)
 ![](https://s2.loli.net/2024/08/30/DdVwnF73YlCWh81.png)
 
 #### 选1进入一键安装模式生成临时argo隧道

@@ -29,5 +29,5 @@ curl -L https://raw.githubusercontent.com/gydchenxiao/Cloudflare-argo-tunnel-scr
 
 ![](https://s2.loli.net/2024/08/30/botRdiIWuSmDaqs.png)
 
-#### 管理页面输入gudong
-![](https://s2.loli.net/2024/08/30/Y129pX5RLC4GPOQ.png)
+#### 管理页面输入cf
+

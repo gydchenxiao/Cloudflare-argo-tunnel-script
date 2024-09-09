@@ -298,11 +298,11 @@ echo 5.卸载服务
 echo 6.查看当前v2ray链接
 echo 0.退出
 read -p "请选择菜单(默认0): " menu
-if [ -z "\$menu" ]
+if [ -z "$menu" ]
 then
 	menu=0
 fi
-if [ \$menu == 1 ]
+if [ "$menu" == 1 ]
 then
 	clear
 	while true
@@ -327,7 +327,7 @@ then
 			break
 		fi
 	done
-elif [ \$menu == 2 ]
+elif [ "$menu" == 2 ]
 then
 	kill -9 \$(ps -ef | grep xray | grep -v grep | awk '{print \$1}') >/dev/null 2>&1
 	kill -9 \$(ps -ef | grep cloudflared-linux | grep -v grep | awk '{print \$1}') >/dev/null 2>&1
@@ -335,13 +335,13 @@ then
 	/etc/local.d/xray.start >/dev/null 2>&1
 	clear
 	sleep 1
-elif [ \$menu == 3 ]
+elif [ "$menu" == 3 ]
 then
 	kill -9 \$(ps -ef | grep xray | grep -v grep | awk '{print \$1}') >/dev/null 2>&1
 	kill -9 \$(ps -ef | grep cloudflared-linux | grep -v grep | awk '{print \$1}') >/dev/null 2>&1
 	clear
 	sleep 2
-elif [ \$menu == 4 ]
+elif [ "$menu" == 4 ]
 then
 	kill -9 \$(ps -ef | grep xray | grep -v grep | awk '{print \$1}') >/dev/null 2>&1
 	kill -9 \$(ps -ef | grep cloudflared-linux | grep -v grep | awk '{print \$1}') >/dev/null 2>&1
@@ -349,7 +349,7 @@ then
 	/etc/local.d/xray.start >/dev/null 2>&1
 	clear
 	sleep 1
-elif [ \$menu == 5 ]
+elif [ "$menu" == 5 ]
 then
 	kill -9 \$(ps -ef | grep xray | grep -v grep | awk '{print \$1}') >/dev/null 2>&1
 	kill -9 \$(ps -ef | grep cloudflared-linux | grep -v grep | awk '{print \$1}') >/dev/null 2>&1
@@ -359,11 +359,11 @@ then
 	echo 请访问 https://dash.cloudflare.com/profile/api-tokens
 	echo 删除授权的 Argo Tunnel API Token 即可
 	exit
-elif [ \$menu == 6 ]
+elif [ "$menu" == 6 ]
 then
 	clear
 	cat /opt/cf/v2ray.txt
-elif [ \$menu == 0 ]
+elif [ "$menu" == 0 ]
 then
 	echo 退出成功
 	exit
@@ -387,11 +387,11 @@ echo 5.卸载服务
 echo 6.查看当前v2ray链接
 echo 0.退出
 read -p "请选择菜单(默认0): " menu
-if [ -z "\$menu" ]
+if [ -z "$menu" ]
 then
 	menu=0
 fi
-if [ \$menu == 1 ]
+if [ "$menu" == 1 ]
 then
 	clear
 	while true
@@ -416,22 +416,22 @@ then
 			break
 		fi
 	done
-elif [ \$menu == 2 ]
+elif [ "$menu" == 2 ]
 then
 	systemctl start cloudflared.service
 	systemctl start xray.service
 	clear
-elif [ \$menu == 3 ]
+elif [ "$menu" == 3 ]
 then
 	systemctl stop cloudflared.service
 	systemctl stop xray.service
 	clear
-elif [ \$menu == 4 ]
+elif [ "$menu" == 4 ]
 then
 	systemctl restart cloudflared.service
 	systemctl restart xray.service
 	clear
-elif [ \$menu == 5 ]
+elif [ "$menu" == 5 ]
 then
 	systemctl stop cloudflared.service
 	systemctl stop xray.service
@@ -446,11 +446,11 @@ then
 	echo 请访问 https://dash.cloudflare.com/profile/api-tokens
 	echo 删除授权的 Argo Tunnel API Token 即可
 	exit
-elif [ \$menu == 6 ]
+elif [ "$menu" == 6 ]
 then
 	clear
 	cat /opt/cf/v2ray.txt
-elif [ \$menu == 0 ]
+elif [ "$menu" == 0 ]
 then
 	echo 退出成功
 	exit
@@ -463,12 +463,12 @@ ln -sf /opt/cf/cf.sh /usr/bin/cf
 }
 
 clear
-echo 安装服务模式,需要有Cloudflare托管域名,并且需要按照提示手动绑定argo服务
-echo 首次绑定argO服务后如果不想再次跳转网页绑定
+echo 一键安装模式下,需要在Cloudflare上托管域名,并且需要按照提示手动绑定argo服务
+echo 首次绑定argo服务后如果不想再次跳转网页绑定
 echo 将已经绑定的系统目录下的 /root/.cloudflared 文件夹以及内容
 echo 拷贝至新系统下同样的目录,会自动跳过登录验证
 
-echo -e '\n'Cloudlfare argo tunnel一键安装脚本'\n'
+echo -e '\nCloudlfare argo tunnel一键安装脚本\n'
 echo 1.一键安装模式
 echo 2.卸载服务
 echo 3.清空缓存
@@ -478,14 +478,15 @@ if [ -z "$mode" ]
 then
 	mode=1
 fi
-elif [ $mode == 1 ]
+
+if [ "$mode" == "1" ]
 then
 	read -p "请选择xray协议(默认1.vmess,2.vless):" protocol
 	if [ -z "$protocol" ]
 	then
 		protocol=1
 	fi
-	if [ $protocol != 1 ] && [ $protocol != 2 ]
+	if [ "$protocol" != "1" ] && [ "$protocol" != "2" ]
 	then
 		echo 请输入正确的xray协议
 		exit
@@ -495,13 +496,13 @@ then
 	then
 		ips=4
 	fi
-	if [ $ips != 4 ] && [ $ips != 6 ]
+	if [ "$ips" != "4" ] && [ "$ips" != "6" ]
 	then
 		echo 请输入正确的argo连接模式
 		exit
 	fi
 	isp=$(curl -$ips -s https://visa.cn/meta | awk -F\" '{print $26"-"$18"-"$30}' | sed -e 's/ /_/g')
-	if [ $(grep -i PRETTY_NAME /etc/os-release | cut -d \" -f2 | awk '{print $1}') == "Alpine" ]
+	if [ "$(grep -i PRETTY_NAME /etc/os-release | cut -d \" -f2 | awk '{print $1}')" == "Alpine" ]
 	then
 		kill -9 $(ps -ef | grep xray | grep -v grep | awk '{print $1}') >/dev/null 2>&1
 		kill -9 $(ps -ef | grep cloudflared-linux | grep -v grep | awk '{print $1}') >/dev/null 2>&1
@@ -519,9 +520,9 @@ then
 	installtunnel
 	cat /opt/cf/v2ray.txt
 	echo 服务安装完成,管理服务请运行命令 cf
-elif [ $mode == 2 ]
+elif [ "$mode" == "2" ]
 then
-	if [ $(grep -i PRETTY_NAME /etc/os-release | cut -d \" -f2 | awk '{print $1}') == "Alpine" ]
+	if [ "$(grep -i PRETTY_NAME /etc/os-release | cut -d \" -f2 | awk '{print $1}')" == "Alpine" ]
 	then
 		kill -9 $(ps -ef | grep xray | grep -v grep | awk '{print $1}') >/dev/null 2>&1
 		kill -9 $(ps -ef | grep cloudflared-linux | grep -v grep | awk '{print $1}') >/dev/null 2>&1
@@ -541,9 +542,9 @@ then
 	echo 彻底删除授权记录
 	echo 请访问 https://dash.cloudflare.com/profile/api-tokens
 	echo 删除授权的 Argo Tunnel API Token 即可
-elif [ $mode == 3 ]
+elif [ "$mode" == "3" ]
 then
-	if [ $(grep -i PRETTY_NAME /etc/os-release | cut -d \" -f2 | awk '{print $1}') == "Alpine" ]
+	if [ "$(grep -i PRETTY_NAME /etc/os-release | cut -d \" -f2 | awk '{print $1}')" == "Alpine" ]
 	then
 		kill -9 $(ps -ef | grep xray | grep -v grep | awk '{print $1}') >/dev/null 2>&1
 		kill -9 $(ps -ef | grep cloudflared-linux | grep -v grep | awk '{print $1}') >/dev/null 2>&1

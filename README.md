@@ -3,7 +3,9 @@
 ```
 curl -L https://raw.githubusercontent.com/gydchenxiao/Cloudflare-argo-tunnel-script/main/argo.sh -o argo.sh && bash argo.sh
 ```
-#### 复制脚本到海外的nat或者vps里并回车enter    [ssh工具推荐](https://tabby.sh/)
+#### 复制脚本到海外的nat或者vps里并回车enter  
+[ssh工具推荐](https://tabby.sh/)
+
 ![](https://s2.loli.net/2024/08/30/DdVwnF73YlCWh81.png)
 <br />
 
@@ -30,6 +32,6 @@ curl -L https://raw.githubusercontent.com/gydchenxiao/Cloudflare-argo-tunnel-scr
 ![](https://s2.loli.net/2024/09/09/BEUeYfnLSONpvAw.jpg)
 <br />
 
-#### 管理页面输入cf
+#### 选择管理页面请输入cf
 ![](https://s2.loli.net/2024/09/09/P4aYfJomvuIVRhe.jpg)
 

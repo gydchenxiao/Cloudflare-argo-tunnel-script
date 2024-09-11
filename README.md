@@ -1,7 +1,7 @@
 ### 一键安装脚本生成Cloudflare argo节点 
 #### 脚本：
 ```
-curl -L https://raw.githubusercontent.com/gydchenxiao/Cloudflare-argo-tunnel-script/main/argo.sh -o argo.sh && bash argo.sh
+curl -L https://raw.githubusercontent.com/gydchenxiao/Cloudflare-argo-tunnel-script/main/argotunnel.sh -o argotunnel.sh && bash argotunnel.sh
 ```
 #### 复制脚本到海外的nat或者vps里并回车enter  
 [ssh工具推荐](https://tabby.sh/)

@@ -192,9 +192,9 @@ if [ $protocol == 1 ]
 then
 	echo -e vmess链接已经生成, visa.cn 可替换为CF优选IP'\n' >/opt/cf/v2ray.txt
 	echo 'vmess://'$(echo '{"add":"visa.cn","aid":"0","host":"'$domain'","id":"'$uuid'","net":"ws","path":"'$urlpath'","port":"443","ps":"'$(echo $isp | sed -e 's/_/ /g')'","tls":"tls","type":"none","v":"2"}' | base64 -w 0) >>/opt/cf/v2ray.txt
-	echo -e '\n'端口 443 可改为 2053 2083 2087 2096 8443'\n' >>/opt/cf/v2ray.txt
+	echo -e '\n'vmess + ws + tls 端口 443 可改为 2053 2083 2087 2096 8443'\n' >>/opt/cf/v2ray.txt
 	echo 'vmess://'$(echo '{"add":"visa.cn","aid":"0","host":"'$domain'","id":"'$uuid'","net":"ws","path":"'$urlpath'","port":"80","ps":"'$(echo $isp | sed -e 's/_/ /g')'","tls":"","type":"none","v":"2"}' | base64 -w 0) >>/opt/cf/v2ray.txt
-	echo -e '\n'端口 80 可改为 8080 8880 2052 2082 2086 2095'\n' >>/opt/cf/v2ray.txt
+	echo -e '\n'vmess + ws 端口 80 可改为 8080 8880 2052 2082 2086 2095'\n' >>/opt/cf/v2ray.txt
 	echo 注意:如果 80 8080 8880 2052 2082 2086 2095 端口无法正常使用 >>/opt/cf/v2ray.txt
 	echo 请前往 https://dash.cloudflare.com/ >>/opt/cf/v2ray.txt
 	echo 检查管理面板 SSL/TLS - 边缘证书 - 始终使用HTTPS 是否处于关闭状态 >>/opt/cf/v2ray.txt
@@ -203,9 +203,9 @@ if [ $protocol == 2 ]
 then
 	echo -e vless链接已经生成, visa.cn 可替换为CF优选IP'\n' >/opt/cf/v2ray.txt
 	echo 'vless://'$uuid'@visa.cn:443?encryption=none&security=tls&type=ws&host='$domain'&path='$urlpath'#'$(echo $isp | sed -e 's/_/%20/g' -e 's/,/%2C/g')'_tls' >>/opt/cf/v2ray.txt
-	echo -e '\n'端口 443 可改为 2053 2083 2087 2096 8443'\n' >>/opt/cf/v2ray.txt
+	echo -e '\n'vless + ws + tls 端口 443 可改为 2053 2083 2087 2096 8443'\n' >>/opt/cf/v2ray.txt
 	echo 'vless://'$uuid'@visa.cn:80?encryption=none&security=none&type=ws&host='$domain'&path='$urlpath'#'$(echo $isp | sed -e 's/_/%20/g' -e 's/,/%2C/g')'' >>/opt/cf/v2ray.txt
-	echo -e '\n'端口 80 可改为 8080 8880 2052 2082 2086 2095'\n' >>/opt/cf/v2ray.txt
+	echo -e '\n'vless + ws端口 80 可改为 8080 8880 2052 2082 2086 2095'\n' >>/opt/cf/v2ray.txt
 	echo 注意:如果 80 8080 8880 2052 2082 2086 2095 端口无法正常使用 >>/opt/cf/v2ray.txt
 	echo 请前往 https://dash.cloudflare.com/ >>/opt/cf/v2ray.txt
 	echo 检查管理面板 SSL/TLS - 边缘证书 - 始终使用HTTPS 是否处于关闭状态 >>/opt/cf/v2ray.txt
@@ -363,101 +363,13 @@ elif [ \$menu == 6 ]
 then
 	clear
 	cat /opt/cf/v2ray.txt
-elif [ \$menu" == 0 ]
+elif [ \$menu == 0 ]
 then
 	echo 退出成功
 	exit
 fi
 done
 EOF
-else
-#创建命令链接
-cat>/opt/cf/cf.sh<<EOF
-#!/bin/bash
-clear
-while true
-do
-echo argo \$(systemctl status cloudflared.service | sed -n '3p')
-echo xray \$(systemctl status xray.service | sed -n '3p')
-echo 1.管理TUNNEL
-echo 2.启动服务
-echo 3.停止服务
-echo 4.重启服务
-echo 5.卸载服务
-echo 6.查看当前v2ray链接
-echo 0.退出
-read -p "请选择菜单(默认0): " menu
-if [ -z "$menu" ]
-then
-	menu=0
-fi
-if [ "$menu" == 1 ]
-then
-	clear
-	while true
-	do
-		echo ARGO TUNNEL当前已经绑定的服务如下
-		/opt/cf/cloudflared-linux tunnel list
-		echo 1.删除TUNNEL
-		echo 0.退出
-		read -p "请选择菜单(默认0): " tunneladmin
-		if [ -z "\$tunneladmin" ]
-		then
-			tunneladmin=0
-		fi
-		if [ \$tunneladmin == 1 ]
-		then
-			read -p "请输入要删除的TUNNEL NAME: " tunnelname
-			echo 断开TUNNEL \$tunnelname
-			/opt/cf/cloudflared-linux tunnel cleanup \$tunnelname
-			echo 删除TUNNEL \$tunnelname
-			/opt/cf/cloudflared-linux tunnel delete \$tunnelname
-		else
-			break
-		fi
-	done
-elif [ "$menu" == 2 ]
-then
-	systemctl start cloudflared.service
-	systemctl start xray.service
-	clear
-elif [ "$menu" == 3 ]
-then
-	systemctl stop cloudflared.service
-	systemctl stop xray.service
-	clear
-elif [ "$menu" == 4 ]
-then
-	systemctl restart cloudflared.service
-	systemctl restart xray.service
-	clear
-elif [ "$menu" == 5 ]
-then
-	systemctl stop cloudflared.service
-	systemctl stop xray.service
-	systemctl disable cloudflared.service
-	systemctl disable xray.service
-	kill -9 \$(ps -ef | grep xray | grep -v grep | awk '{print \$2}') >/dev/null 2>&1
-	kill -9 \$(ps -ef | grep cloudflared-linux | grep -v grep | awk '{print \$2}') >/dev/null 2>&1
-	rm -rf /opt/cf /lib/systemd/system/cloudflared.service /lib/systemd/system/xray.service /usr/bin/cf ~/.cloudflared
-	systemctl --system daemon-reload
-	echo 所有服务都卸载完成
-	echo 彻底删除授权记录
-	echo 请访问 https://dash.cloudflare.com/profile/api-tokens
-	echo 删除授权的 Argo Tunnel API Token 即可
-	exit
-elif [ "$menu" == 6 ]
-then
-	clear
-	cat /opt/cf/v2ray.txt
-elif [ "$menu" == 0 ]
-then
-	echo 退出成功
-	exit
-fi
-done
-EOF
-fi
 chmod +x /opt/cf/cf.sh
 ln -sf /opt/cf/cf.sh /usr/bin/cf
 }

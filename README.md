@@ -9,7 +9,7 @@ curl -L https://raw.githubusercontent.com/gydchenxiao/Cloudflare-argo-tunnel-scr
 ![](https://s2.loli.net/2024/08/30/DdVwnF73YlCWh81.png)
 <br />
 
-#### 选1进入安装模式，需要在Cloudflare上托管域名，绑定token,生成argo隧道节点
+#### 选1进入一键安装模式，需要有在Cloudflare上托管域名，按照提示创建二级域名，绑定token,生成argo隧道节点
 ![](https://s2.loli.net/2024/09/09/42uxiSRmBfMUDOT.jpg)
 <br />
 

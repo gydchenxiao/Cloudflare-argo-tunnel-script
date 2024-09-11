@@ -302,7 +302,7 @@ if [ -z "$menu" ]
 then
 	menu=0
 fi
-if [ "$menu" == 1 ]
+if [ \$menu == 1 ]
 then
 	clear
 	while true
@@ -327,7 +327,7 @@ then
 			break
 		fi
 	done
-elif [ "$menu" == 2 ]
+elif [ \$menu == 2 ]
 then
 	kill -9 \$(ps -ef | grep xray | grep -v grep | awk '{print \$1}') >/dev/null 2>&1
 	kill -9 \$(ps -ef | grep cloudflared-linux | grep -v grep | awk '{print \$1}') >/dev/null 2>&1
@@ -335,13 +335,13 @@ then
 	/etc/local.d/xray.start >/dev/null 2>&1
 	clear
 	sleep 1
-elif [ "$menu" == 3 ]
+elif [ \$menu == 3 ]
 then
 	kill -9 \$(ps -ef | grep xray | grep -v grep | awk '{print \$1}') >/dev/null 2>&1
 	kill -9 \$(ps -ef | grep cloudflared-linux | grep -v grep | awk '{print \$1}') >/dev/null 2>&1
 	clear
 	sleep 2
-elif [ "$menu" == 4 ]
+elif [ \$menu == 4 ]
 then
 	kill -9 \$(ps -ef | grep xray | grep -v grep | awk '{print \$1}') >/dev/null 2>&1
 	kill -9 \$(ps -ef | grep cloudflared-linux | grep -v grep | awk '{print \$1}') >/dev/null 2>&1
@@ -349,7 +349,7 @@ then
 	/etc/local.d/xray.start >/dev/null 2>&1
 	clear
 	sleep 1
-elif [ "$menu" == 5 ]
+elif [ \$menu == 5 ]
 then
 	kill -9 \$(ps -ef | grep xray | grep -v grep | awk '{print \$1}') >/dev/null 2>&1
 	kill -9 \$(ps -ef | grep cloudflared-linux | grep -v grep | awk '{print \$1}') >/dev/null 2>&1
@@ -359,11 +359,11 @@ then
 	echo 请访问 https://dash.cloudflare.com/profile/api-tokens
 	echo 删除授权的 Argo Tunnel API Token 即可
 	exit
-elif [ "$menu" == 6 ]
+elif [ \$menu == 6 ]
 then
 	clear
 	cat /opt/cf/v2ray.txt
-elif [ "$menu" == 0 ]
+elif [ \$menu" == 0 ]
 then
 	echo 退出成功
 	exit

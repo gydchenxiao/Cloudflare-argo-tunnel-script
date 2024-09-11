@@ -186,7 +186,7 @@ echo $domain 绑定成功
 tunneluuid=$(cut -d= -f2 argo.log)
 if [ $protocol == 1 ]
 then
-	echo -e vmess链接已经生成, visa.com 可替换为argotunnel优选IP'\n' >/opt/argotunnel/v2ray.txt
+	echo -e vmess链接已经生成, visa.com 可替换为Cloudflare优选IP'\n' >/opt/argotunnel/v2ray.txt
 	echo 'vmess://'$(echo '{"add":"visa.com","aid":"0","host":"'$domain'","id":"'$uuid'","net":"ws","path":"'$urlpath'","port":"443","ps":"'$(echo $isp | sed -e 's/_/ /g')'","tls":"tls","type":"none","v":"2"}' | base64 -w 0) >>/opt/argotunnel/v2ray.txt
 	echo -e '\n'vmess + ws + tls端口 443 可改为 2053 2083 2087 2096 8443'\n' >>/opt/argotunnel/v2ray.txt
 	echo 'vmess://'$(echo '{"add":"visa.com","aid":"0","host":"'$argo'","id":"'$uuid'","net":"ws","path":"'$urlpath'","port":"80","ps":"'$(echo $isp | sed -e 's/_/ /g')'","tls":"","type":"none","v":"2"}' | base64 -w 0) >>/opt/argotunnel/v2ray.txt
@@ -197,7 +197,7 @@ then
 fi
 if [ $protocol == 2 ]
 then
-	echo -e vless链接已经生成, visa.com 可替换为argotunnel优选IP'\n' >/opt/argotunnel/v2ray.txt
+	echo -e vless链接已经生成, visa.com 可替换为Cloudflare优选IP'\n' >/opt/argotunnel/v2ray.txt
 	echo 'vless://'$uuid'@visa.com:443?encryption=none&security=tls&type=ws&host='$domain'&path='$urlpath'#'$(echo $isp | sed -e 's/_/%20/g' -e 's/,/%2C/g')'_tls' >>/opt/argotunnel/v2ray.txt
 	echo -e '\n'vless + ws + tls 端口 443 可改为 2053 2083 2087 2096 8443'\n' >>/opt/argotunnel/v2ray.txt
 	echo 'vless://'$uuid'@visa.com:80?encryption=none&security=none&type=ws&host='$argo'&path='$urlpath'#'$(echo $isp | sed -e 's/_/%20/g' -e 's/,/%2C/g')'' >>/opt/argotunnel/v2ray.txt

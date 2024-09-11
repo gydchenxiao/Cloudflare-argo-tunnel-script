@@ -1,8 +1,8 @@
 #!/bin/bash
 # onekey cf
 linux_os=("Debian" "Ubuntu" "CentOS" "Fedora" "Alpine")
-linux_update=("apt update" "apt update" "yum -y update" "yum -y update" "apk update")
-linux_install=("apt -y install" "apt -y install" "yum -y install" "yum -y install" "apk add -f")
+linux_update=("apt update" "apt update" "yum -y update" "yum -y update")
+linux_install=("apt -y install" "apt -y install" "yum -y install" "yum -y install")
 n=0
 for i in `echo ${linux_os[@]}`
 do
@@ -29,13 +29,10 @@ then
 	${linux_update[$n]}
 	${linux_install[$n]} curl
 fi
-if [ $(grep -i PRETTY_NAME /etc/os-release | cut -d \" -f2 | awk '{print $1}') != "Alpine" ]
+if [ -z $(type -P systemctl) ]
 then
-	if [ -z $(type -P systemctl) ]
-	then
-		${linux_update[$n]}
-		${linux_install[$n]} systemctl
-	fi
+	${linux_update[$n]}
+	${linux_install[$n]} systemctl
 fi
 
 function installtunnel(){
@@ -189,22 +186,22 @@ echo $domain 绑定成功
 tunneluuid=$(cut -d= -f2 argo.log)
 if [ $protocol == 1 ]
 then
-	echo -e vmess链接已经生成, visa.cn 可替换为CF优选IP'\n' >/opt/argotunnel/v2ray.txt
-	echo 'vmess://'$(echo '{"add":"visa.cn","aid":"0","host":"'$domain'","id":"'$uuid'","net":"ws","path":"'$urlpath'","port":"443","ps":"'$(echo $isp | sed -e 's/_/ /g')'","tls":"tls","type":"none","v":"2"}' | base64 -w 0) >>/opt/argotunnel/v2ray.txt
-	echo -e '\n'端口 443 可改为 2053 2083 2087 2096 8443'\n' >>/opt/argotunnel/v2ray.txt
-	echo 'vmess://'$(echo '{"add":"visa.cn","aid":"0","host":"'$argo'","id":"'$uuid'","net":"ws","path":"'$urlpath'","port":"80","ps":"'$(echo $isp | sed -e 's/_/ /g')'","tls":"","type":"none","v":"2"}' | base64 -w 0) >>/opt/argotunnel/v2ray.txt
-	echo -e '\n'端口 80 可改为 8080 8880 2052 2082 2086 2095'\n' >>/opt/argotunnel/v2ray.txt
+	echo -e vmess链接已经生成, visa.com 可替换为argotunnel优选IP'\n' >/opt/argotunnel/v2ray.txt
+	echo 'vmess://'$(echo '{"add":"visa.com","aid":"0","host":"'$domain'","id":"'$uuid'","net":"ws","path":"'$urlpath'","port":"443","ps":"'$(echo $isp | sed -e 's/_/ /g')'","tls":"tls","type":"none","v":"2"}' | base64 -w 0) >>/opt/argotunnel/v2ray.txt
+	echo -e '\n'vmess + ws + tls端口 443 可改为 2053 2083 2087 2096 8443'\n' >>/opt/argotunnel/v2ray.txt
+	echo 'vmess://'$(echo '{"add":"visa.com","aid":"0","host":"'$argo'","id":"'$uuid'","net":"ws","path":"'$urlpath'","port":"80","ps":"'$(echo $isp | sed -e 's/_/ /g')'","tls":"","type":"none","v":"2"}' | base64 -w 0) >>/opt/argotunnel/v2ray.txt
+	echo -e '\n'vmess + ws 端口 80 可改为 8080 8880 2052 2082 2086 2095'\n' >>/opt/argotunnel/v2ray.txt
 	echo 注意:如果 80 8080 8880 2052 2082 2086 2095 端口无法正常使用 >>/opt/argotunnel/v2ray.txt
 	echo 请前往 https://dash.cloudflare.com/ >>/opt/argotunnel/v2ray.txt
 	echo 检查管理面板 SSL/TLS - 边缘证书 - 始终使用HTTPS 是否处于关闭状态 >>/opt/argotunnel/v2ray.txt
 fi
 if [ $protocol == 2 ]
 then
-	echo -e vless链接已经生成, visa.cn 可替换为CF优选IP'\n' >/opt/argotunnel/v2ray.txt
-	echo 'vless://'$uuid'@visa.cn:443?encryption=none&security=tls&type=ws&host='$domain'&path='$urlpath'#'$(echo $isp | sed -e 's/_/%20/g' -e 's/,/%2C/g')'_tls' >>/opt/argotunnel/v2ray.txt
-	echo -e '\n'端口 443 可改为 2053 2083 2087 2096 8443'\n' >>/opt/argotunnel/v2ray.txt
-	echo 'vless://'$uuid'@visa.cn:80?encryption=none&security=none&type=ws&host='$argo'&path='$urlpath'#'$(echo $isp | sed -e 's/_/%20/g' -e 's/,/%2C/g')'' >>/opt/argotunnel/v2ray.txt
-	echo -e '\n'端口 80 可改为 8080 8880 2052 2082 2086 2095'\n' >>/opt/argotunnel/v2ray.txt
+	echo -e vless链接已经生成, visa.com 可替换为argotunnel优选IP'\n' >/opt/argotunnel/v2ray.txt
+	echo 'vless://'$uuid'@visa.com:443?encryption=none&security=tls&type=ws&host='$domain'&path='$urlpath'#'$(echo $isp | sed -e 's/_/%20/g' -e 's/,/%2C/g')'_tls' >>/opt/argotunnel/v2ray.txt
+	echo -e '\n'vless + ws + tls 端口 443 可改为 2053 2083 2087 2096 8443'\n' >>/opt/argotunnel/v2ray.txt
+	echo 'vless://'$uuid'@visa.com:80?encryption=none&security=none&type=ws&host='$argo'&path='$urlpath'#'$(echo $isp | sed -e 's/_/%20/g' -e 's/,/%2C/g')'' >>/opt/argotunnel/v2ray.txt
+	echo -e '\n'vless + ws 端口 80 可改为 8080 8880 2052 2082 2086 2095'\n' >>/opt/argotunnel/v2ray.txt
 	echo 注意:如果 80 8080 8880 2052 2082 2086 2095 端口无法正常使用 >>/opt/argotunnel/v2ray.txt
 	echo 请前往 https://dash.cloudflare.com/ >>/opt/argotunnel/v2ray.txt
 	echo 检查管理面板 SSL/TLS - 边缘证书 - 始终使用HTTPS 是否处于关闭状态 >>/opt/argotunnel/v2ray.txt
@@ -343,25 +340,24 @@ ln -sf /opt/argotunnel/argotunnel.sh /usr/bin/argotunnel
 }
 
 clear
-echo 一键安装模式下,需要在Cloudflare上托管域名,并且需要按照提示手动绑定argo服务
-echo 首次绑定argo服务后如果不想再次跳转网页绑定
+echo 一键安装服务模式,需要有argotunnel托管域名,并且需要按照提示手动绑定ARGO服务
+echo 首次绑定ARGO服务后如果不想再次跳转网页绑定
 echo 将已经绑定的系统目录下的 /root/.cloudflared 文件夹以及内容
 echo 拷贝至新系统下同样的目录,会自动跳过登录验证
 
-echo -e '\nCloudlfare argo tunnel一键安装脚本\n'
-echo 1.一键安装模式
+echo -e '\n''\n'
+echo 1.安装服务
 echo 2.卸载服务
 echo 3.清空缓存
 echo -e 0.退出脚本'\n'
-read -p "请选择:" mode
+read -p "请选择模式(默认1):" mode
 if [ -z "$mode" ]
 then
 	mode=1
 fi
-
 if [ $mode == 1 ]
 then
-	read -p "请选择xray协议(默认 1.vmess,2.vless):" protocol
+	read -p "请选择xray协议(默认1.vmess,2.vless):" protocol
 	if [ -z "$protocol" ]
 	then
 		protocol=1
@@ -390,43 +386,27 @@ then
 	systemctl --system daemon-reload
 	installtunnel
 	cat /opt/argotunnel/v2ray.txt
-	echo 服务安装完成,管理服务请运行命令 cf
-elif [ "$mode" == "2" ]
+	echo 服务安装完成,管理服务请运行命令 argotunnel
+elif [ $mode == 2 ]
 then
-	if [ "$(grep -i PRETTY_NAME /etc/os-release | cut -d \" -f2 | awk '{print $1}')" == "Alpine" ]
-	then
-		kill -9 $(ps -ef | grep xray | grep -v grep | awk '{print $1}') >/dev/null 2>&1
-		kill -9 $(ps -ef | grep cloudflared-linux | grep -v grep | awk '{print $1}') >/dev/null 2>&1
-		rm -rf /opt/argotunnel /lib/systemd/system/cloudflared.service /lib/systemd/system/xray.service /usr/bin/argotunnel
-	else
-		systemctl stop cloudflared.service
-		systemctl stop xray.service
-		systemctl disable cloudflared.service
-		systemctl disable xray.service
-		kill -9 $(ps -ef | grep xray | grep -v grep | awk '{print $2}') >/dev/null 2>&1
-		kill -9 $(ps -ef | grep cloudflared-linux | grep -v grep | awk '{print $2}') >/dev/null 2>&1
-		rm -rf /opt/argotunnel /lib/systemd/system/cloudflared.service /lib/systemd/system/xray.service /usr/bin/argotunnel ~/.cloudflared
-		systemctl --system daemon-reload
-	fi
+	systemctl stop cloudflared.service
+	systemctl stop xray.service
+	systemctl disable cloudflared.service
+	systemctl disable xray.service
+	rm -rf /opt/argotunnel /lib/systemd/system/cloudflared.service /lib/systemd/system/xray.service /usr/bin/argotunnel ~/.cloudflared
+	systemctl --system daemon-reload
 	clear
 	echo 所有服务都卸载完成
 	echo 彻底删除授权记录
 	echo 请访问 https://dash.cloudflare.com/profile/api-tokens
 	echo 删除授权的 Argo Tunnel API Token 即可
-elif [ "$mode" == "3" ]
+elif [ $mode == 3 ]
 then
-	if [ "$(grep -i PRETTY_NAME /etc/os-release | cut -d \" -f2 | awk '{print $1}')" == "Alpine" ]
-	then
-		kill -9 $(ps -ef | grep xray | grep -v grep | awk '{print $1}') >/dev/null 2>&1
-		kill -9 $(ps -ef | grep cloudflared-linux | grep -v grep | awk '{print $1}') >/dev/null 2>&1
-	else
-		kill -9 $(ps -ef | grep xray | grep -v grep | awk '{print $2}') >/dev/null 2>&1
-		kill -9 $(ps -ef | grep cloudflared-linux | grep -v grep | awk '{print $2}') >/dev/null 2>&1
-	fi
+	kill -9 $(ps -ef | grep xray | grep -v grep | awk '{print $2}') >/dev/null 2>&1
+	kill -9 $(ps -ef | grep cloudflared-linux | grep -v grep | awk '{print $2}') >/dev/null 2>&1
 	rm -rf xray cloudflared-linux v2ray.txt
 else
 	echo 退出成功
 	exit
 fi
-
 

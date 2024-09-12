@@ -340,13 +340,13 @@ ln -sf /opt/argotunnel/argotunnel.sh /usr/bin/argotunnel
 }
 
 clear
-echo 一键安装服务模式,需要有argotunnel托管域名,并且需要按照提示手动绑定ARGO服务
-echo 首次绑定ARGO服务后如果不想再次跳转网页绑定
+echo 一键安装服务模式,需要在cloudflare上托管域名,并且需要按照提示手动绑定Argo服务
+echo 首次绑定Argo服务后如果不想再次跳转网页绑定
 echo 将已经绑定的系统目录下的 /root/.cloudflared 文件夹以及内容
 echo 拷贝至新系统下同样的目录,会自动跳过登录验证
 
-echo -e '\n''\n'
-echo 1.安装服务
+echo -e '\n'Cloudflare Argo Tunnel'\n'
+echo 1.一键安装服务
 echo 2.卸载服务
 echo 3.清空缓存
 echo -e 0.退出脚本'\n'
@@ -386,7 +386,7 @@ then
 	systemctl --system daemon-reload
 	installtunnel
 	cat /opt/argotunnel/v2ray.txt
-	echo 服务安装完成,管理服务请运行命令 argotunnel
+	echo 服务安装完成,管理服务请运行命令 cf
 elif [ $mode == 2 ]
 then
 	systemctl stop cloudflared.service
